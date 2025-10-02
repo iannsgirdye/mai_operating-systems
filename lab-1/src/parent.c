@@ -11,6 +11,7 @@
 
 
 #define PIPE_ERROR -1
+#define IS_CHILD 0
 #define FORK_ERROR -1
 #define EXECV_ERROR -1
 #define FILE_NAME_ERROR -1
@@ -96,21 +97,29 @@ int main() {
   }
 
   pid_t child1 = fork();
-  if (child1 == FORK_ERROR) {
-    errorFork();
-    return 0;
-  }
-  if (afterFork(pipe1, pipe2, fileName1) == AFTER_FORK_ERROR) {
-    return 0;
+  switch (child1) {
+    case FORK_ERROR: {
+      errorFork();
+      return 0;
+    }
+    case IS_CHILD: {
+      if (afterFork(pipe1, pipe2, fileName1) == AFTER_FORK_ERROR) {
+        return 0;
+      }
+    }
   }
 
   pid_t child2 = fork();
-  if (child2 == FORK_ERROR) {
-    errorFork();
-    return 0;
-  }
-  if (afterFork(pipe1, pipe2, fileName2) == AFTER_FORK_ERROR) {
-    return 0;
+  switch (child2) {
+    case FORK_ERROR: {
+      errorFork();
+      return 0;
+    }
+    case IS_CHILD: {
+      if (afterFork(pipe1, pipe2, fileName2) == AFTER_FORK_ERROR) {
+        return 0;
+      }
+    }
   }
 
   close(pipe1[0]);
