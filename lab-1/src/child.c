@@ -39,7 +39,6 @@ int main(int argc, char *argv[]) {
   while ((bufferLen = read(STDIN_FILENO, buffer, sizeof(buffer))) > 0) {
     reverse(buffer, bufferLen);
     write(file, buffer, bufferLen);
-    write(STDOUT_FILENO, buffer, bufferLen);
   }
 
   close(file);
