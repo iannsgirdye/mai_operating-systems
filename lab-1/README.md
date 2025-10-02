@@ -15,3 +15,17 @@
 
 Правило фильтрации: с вероятностью 80% строки отправляются в `pipe1`, иначе в `pipe2`.
 Дочерние процессы инвертируют строки.
+
+
+## Системные вызовы для ОС Linux
+- `pid_t fork()` — создание дочернего процесса;
+- `int execve(const char *filename, char *const argv[], char *const envp[])` (и другие вариации
+`exec`) — замена образа памяти процесса;
+- `pid_t waitpid(pid_t pid, int *status, int options)` — Ожидание завершения дочернего процесса;
+- `void exit(int status)` — завершения выполнения процесса и возвращение статуса;
+- `int pipe(int pipefd[2])` — создание неименованного канала для передачи данных между
+процессами;
+- `int dup2(int oldfd, int newfd)` — переназначение файлового дескриптора;
+- `int open(const char *pathname, int flags, mode_t mode)` — открытие\создание файла;
+- `int close(int fd)` — закрыть файл;
+- `int mkfifo(const char *pathname, mode_t mode)` — создание именованного канала.
