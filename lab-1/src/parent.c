@@ -41,10 +41,12 @@ int getFileName(char* fileName, const int fileNumber) {
 }
 
 
-int afterFork(const int pipe1[], const int pipe2[], char *fileName) {
-  dup2(pipe2[0], STDIN_FILENO);
-  close(pipe2[0]); close(pipe2[1]);
-  close(pipe1[0]); close(pipe1[1]);
+int afterFork(const int pipe[], const int otherPipe[], char *fileName) {
+  dup2(pipe[0], STDIN_FILENO);
+  close(pipe[0]);
+  close(pipe[1]);
+  close(otherPipe[0]); 
+  close(otherPipe[1]);
 
   char *const args[] = {"child", fileName, NULL};
   if (execv("./child", args) == EXECV_ERROR) {
@@ -116,7 +118,7 @@ int main() {
       return 0;
     }
     case IS_CHILD: {
-      if (afterFork(pipe1, pipe2, fileName2) == AFTER_FORK_ERROR) {
+      if (afterFork(pipe2, pipe1, fileName2) == AFTER_FORK_ERROR) {
         return 0;
       }
     }
