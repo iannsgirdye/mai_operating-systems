@@ -31,7 +31,7 @@ int getFileName(char* fileName, const int fileNumber) {
   );
   write(STDOUT_FILENO, message, messageLen);
   
-  ssize_t fileNameLen = read(STDIN_FILENO, fileName, sizeof(fileName) - 1);
+  ssize_t fileNameLen = read(STDIN_FILENO, fileName, FILE_NAME_SIZE);
   if (fileNameLen < 1) {
     errorInvalidFileName();
     return FILE_NAME_ERROR;
