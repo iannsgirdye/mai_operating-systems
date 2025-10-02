@@ -7,6 +7,7 @@ void errorFork();
 void errorExecv();
 void errorInvalidCountOfAgruments();
 void errorOpenFile();
+void errorInvalidFileName();
 
 
 #endif

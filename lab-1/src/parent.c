@@ -13,7 +13,7 @@
 #define PIPE_ERROR -1
 #define FORK_ERROR -1
 #define EXECV_ERROR -1
-#define FILE_NAME_EOF 0
+#define FILE_NAME_ERROR -1
 #define FILE_NAME_SIZE 256
 #define MESSAGE_SIZE 128
 #define BUFFER_SIZE 1024
@@ -21,7 +21,7 @@
 #define EMPTY_BUFFER -1
 
 
-void getFileName(char* fileName, const int fileNumber) {
+int getFileName(char* fileName, const int fileNumber) {
   char message[MESSAGE_SIZE];
   int messageLen = sprintf(
     message,
@@ -29,8 +29,14 @@ void getFileName(char* fileName, const int fileNumber) {
     fileNumber
   );
   write(STDOUT_FILENO, message, messageLen);
+  
   ssize_t fileNameLen = read(STDIN_FILENO, fileName, sizeof(fileName) - 1);
+  if (fileNameLen < 1) {
+    errorInvalidFileName();
+    return FILE_NAME_ERROR;
+  }
   fileName[fileNameLen - 1] = '\0';
+  return 0;
 }
 
 
@@ -82,8 +88,12 @@ int main() {
   }
 
   char fileName1[FILE_NAME_SIZE], fileName2[FILE_NAME_SIZE];
-  getFileName(fileName1, 1);
-  getFileName(fileName2, 2);
+  if (getFileName(fileName1, 1) == FILE_NAME_ERROR) {
+    return 0;
+  }
+  if (getFileName(fileName2, 2) == FILE_NAME_ERROR) {
+    return 0;
+  }
 
   pid_t child1 = fork();
   if (child1 == FORK_ERROR) {
