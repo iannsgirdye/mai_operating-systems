@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -12,6 +13,7 @@
 #define PIPE_ERROR -1
 #define FORK_ERROR -1
 #define EXECV_ERROR -1
+#define FILE_NAME_EOF 0
 #define FILE_NAME_SIZE 256
 #define MESSAGE_SIZE 128
 #define BUFFER_SIZE 1024
@@ -32,7 +34,7 @@ void getFileName(char* fileName, const int fileNumber) {
 }
 
 
-int afterFork(const int pipe1[], const int pipe2[], const char *fileName) {
+int afterFork(const int pipe1[], const int pipe2[], char *fileName) {
   dup2(pipe2[0], STDIN_FILENO);
   close(pipe2[0]); close(pipe2[1]);
   close(pipe1[0]); close(pipe1[1]);
@@ -62,7 +64,7 @@ int readData(char buffer[], ssize_t *bufferLen) {
 }
 
 
-void writeData(const char buffer[], const ssize_t bufferLen, const char pipe1[], const char pipe2[]) {
+void writeData(const char buffer[], const ssize_t bufferLen, const int pipe1[], const int pipe2[]) {
   if ((rand() % 100) < 80) {
     write(pipe1[1], buffer, bufferLen);
     return;
