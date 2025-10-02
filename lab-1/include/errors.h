@@ -5,6 +5,8 @@
 void errorPipe();
 void errorFork();
 void errorExecv();
+void errorInvalidCountOfAgruments();
+void errorOpenFile();
 
 
 #endif

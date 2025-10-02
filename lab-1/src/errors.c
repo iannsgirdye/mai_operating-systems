@@ -23,3 +23,17 @@ void errorExecv() {
   write(STDERR_FILENO, message, sizeof(message));
   exit(EXIT_FAILURE);
 }
+
+
+void errorInvalidCountOfAgruments() {
+  const char *message = COLOR_BOLD_CYAN "usage: " COLOR_WHITE "child filename\n";
+  write(STDERR_FILENO, message, sizeof(message));
+  exit(EXIT_FAILURE);
+}
+
+
+void errorOpenFile() {
+  const char *message = COLOR_BOLD_CYAN "error:" COLOR_WHITE "cannot open file\n";
+  write(STDERR_FILENO, message, sizeof(message));
+  exit(EXIT_FAILURE);
+}
