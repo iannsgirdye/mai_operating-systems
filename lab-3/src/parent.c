@@ -16,7 +16,7 @@
 #define AFTER_FORK_ERROR -1
 #define EMPTY_BUFFER -1
 
-int getFileName(char* fileName, int fileNumber) {
+int getFileName(char *fileName, int fileNumber) {
   char message[BUFSIZ];
   int messageLen = sprintf(message, "Enter name of the %d child file: ", fileNumber);
   write(STDOUT_FILENO, message, messageLen);
