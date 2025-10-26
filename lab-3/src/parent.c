@@ -16,6 +16,8 @@
 #define COMPLETE_CHILD_FAILURE -1
 #define READ_DATA_SUCCESS       0
 #define READ_DATA_FAILURE      -1
+#define WRITE_DATA_SUCCESS      0
+#define WRITE_DATA_FAILURE     -1
 
 int completeChild(const int pipe[], const int otherPipe[], char *fileName) {
   dup2(pipe[0], STDIN_FILENO);
@@ -59,12 +61,12 @@ int readData(char buffer[], ssize_t *bufferLen) {
   return READ_DATA_SUCCESS;
 }
 
-void writeData(const char buffer[], ssize_t bufferLen, const int pipe1[], const int pipe2[]) {
-  if ((rand() % 100) < 80) {
-    write(pipe1[1], buffer, bufferLen);
-    return;
+int writeData(const char buffer[], ssize_t bufferLen, const int pipe1[], const int pipe2[]) {
+  const int *pipe = (rand() % 100) < 80 ? pipe1 : pipe2;
+  if (write(pipe[1], buffer, bufferLen) == WRITE_DATA_FAILURE) {
+    return WRITE_DATA_FAILURE;
   }
-  write(pipe2[1], buffer, bufferLen);
+  return WRITE_DATA_SUCCESS;
 }
 
 int main() {
@@ -101,7 +103,10 @@ int main() {
   ssize_t bufferLen;
   srand(time(NULL));
   while (readData(buffer, &bufferLen) == READ_DATA_SUCCESS) {
-    writeData(buffer, bufferLen, pipe1, pipe2);
+    if (writeData(buffer, bufferLen, pipe1, pipe2) == WRITE_DATA_FAILURE) {
+      printError("Invalid write.");
+      exit(EXIT_FAILURE);
+    }
   }
 
   close(pipe1[1]);
