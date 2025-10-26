@@ -26,8 +26,8 @@ int main(int argc, char *argv[]) {
     exit(EXIT_FAILURE);
   }
 
-  int file = open(argv[1], O_WRONLY | O_CREAT | O_TRUNC, 0600);
-  if (file == OPEN_FAILURE) {
+  int fileDescriptor = open(argv[1], O_WRONLY | O_CREAT | O_TRUNC, 0600);
+  if (fileDescriptor == OPEN_FAILURE) {
     char message[BUFSIZ];
     snprintf(message, BUFSIZ, "Can not open the file \"%s\".", argv[1]);
     printError(message);
@@ -38,9 +38,9 @@ int main(int argc, char *argv[]) {
   ssize_t bufferLen;
   while ((bufferLen = read(STDIN_FILENO, buffer, sizeof(buffer))) > 0) {
     reverse(buffer, bufferLen);
-    write(file, buffer, bufferLen);
+    write(fileDescriptor, buffer, bufferLen);
   }
 
-  close(file);
+  close(fileDescriptor);
   return 0;
 }
