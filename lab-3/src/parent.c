@@ -49,6 +49,25 @@ int completeChild(const int pipe[], const int otherPipe[], char *fileName) {
   return COMPLETE_CHILD_SUCCESS;
 }
 
+int isChild(pid_t child, int childNumber) {
+  if (child == FORK_FAILURE) {
+    char message[BUFSIZ];
+    snprintf(message, BUFSIZ, "Invalid fork #%d.", childNumber);
+    printError(message);
+    exit(EXIT_FAILURE);
+  }
+  return child == IS_CHILD;
+}
+
+void startChild(int childNumber, const int pipe[], const int otherPipe[], char *fileName) {
+  if (completeChild(pipe, otherPipe, fileName) == COMPLETE_CHILD_FAILURE) {
+    char message[BUFSIZ];
+    snprintf(message, BUFSIZ, "Invalid complete of the child #%d.", childNumber);
+    printError(message);
+    exit(EXIT_FAILURE);
+  }
+}
+
 int readData(char buffer[], ssize_t *bufferLen) {
   *bufferLen = read(STDIN_FILENO, buffer, BUFSIZ);
   if (*bufferLen <= 0 || buffer[0] == '\n') {
@@ -83,27 +102,13 @@ int main() {
   }
 
   pid_t child1 = fork();
-  switch (child1) {
-    case FORK_FAILURE:
-      printError("Fork error.");
-      exit(EXIT_FAILURE);
-    case IS_CHILD:
-      if (completeChild(pipe1, pipe2, fileName1) == COMPLETE_CHILD_FAILURE) {
-        printError("Invalid complete of the child #1.");
-        exit(EXIT_FAILURE);
-    }
+  if (isChild(child1, 1)) {
+    startChild(1, pipe1, pipe2, fileName1);
   }
 
   pid_t child2 = fork();
-  switch (child2) {
-    case FORK_FAILURE:
-      printError("Fork error.");
-      exit(EXIT_FAILURE);
-    case IS_CHILD:
-      if (completeChild(pipe2, pipe1, fileName2) == COMPLETE_CHILD_FAILURE) {
-        printError("Invalid complete of the child #2.");
-        exit(EXIT_FAILURE);
-    }
+  if (isChild(child2, 2)) {
+    startChild(2, pipe2, pipe1, fileName2);
   }
 
   close(pipe1[0]);
