@@ -3,4 +3,6 @@
 
 void printError(const char *message);
 
+void print(const char *message);
+
 #endif
