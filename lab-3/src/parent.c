@@ -34,15 +34,16 @@ int getFileName(char *fileName, int fileNumber) {
   return GET_FILE_NAME_SUCCESS;
 }
 
-int afterFork(const int pipe[], const int otherPipe[], char *fileName) {
+int completeChild(const int pipe[], const int otherPipe[], char *fileName) {
   dup2(pipe[0], STDIN_FILENO);
   close(pipe[0]);
   close(pipe[1]);
   close(otherPipe[0]); 
   close(otherPipe[1]);
 
-  char *const args[] = {"child", fileName, NULL};
-  if (execv("./child", args) == EXECV_FAILURE) {
+  const char *path = "./child";
+  char *const argv[] = {"child", fileName, NULL};
+  if (execv(path, argv) == EXECV_FAILURE) {
     printError("Exec child.");
     return AFTER_FORK_FAILURE;
   }
@@ -89,7 +90,7 @@ int main() {
       exit(EXIT_FAILURE);
     }
     case IS_CHILD: {
-      if (afterFork(pipe1, pipe2, fileName1) == AFTER_FORK_FAILURE) {
+      if (completeChild(pipe1, pipe2, fileName1) == AFTER_FORK_FAILURE) {
         printError("After fork error.");
         exit(EXIT_FAILURE);
       }
@@ -103,7 +104,7 @@ int main() {
       exit(EXIT_FAILURE);
     }
     case IS_CHILD: {
-      if (afterFork(pipe2, pipe1, fileName2) == AFTER_FORK_FAILURE) {
+      if (completeChild(pipe2, pipe1, fileName2) == AFTER_FORK_FAILURE) {
         printError("After fork error.");
         exit(EXIT_FAILURE);
       }
