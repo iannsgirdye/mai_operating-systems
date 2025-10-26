@@ -85,12 +85,13 @@ int main() {
   pid_t child1 = fork();
   switch (child1) {
     case FORK_ERROR: {
-      errorFork();
-      return 0;
+      printError("Fork error.");
+      exit(EXIT_FAILURE);
     }
     case IS_CHILD: {
       if (afterFork(pipe1, pipe2, fileName1) == AFTER_FORK_ERROR) {
-        return 0;
+        printError("After fork error.");
+        exit(EXIT_FAILURE);
       }
     }
   }
@@ -103,7 +104,8 @@ int main() {
     }
     case IS_CHILD: {
       if (afterFork(pipe2, pipe1, fileName2) == AFTER_FORK_ERROR) {
-        return 0;
+        printError("After fork error.");
+        exit(EXIT_FAILURE);
       }
     }
   }
