@@ -71,13 +71,11 @@ int main() {
     exit(EXIT_FAILURE);
   }
 
-  char fileName1[BUFSIZ];
+  char fileName1[BUFSIZ], fileName2[BUFSIZ];
   if (getFileName(fileName1, 1) == GET_FILE_NAME_FAILURE) {
     printError("Invalid name of the first file.");
     exit(EXIT_FAILURE);
   }
-
-  char fileName2[BUFSIZ];
   if (getFileName(fileName2, 2) == GET_FILE_NAME_FAILURE) {
     printError("Invalid name of the second file.");
     exit(EXIT_FAILURE);
