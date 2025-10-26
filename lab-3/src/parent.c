@@ -117,11 +117,7 @@ int main() {
   char buffer[BUFSIZ];
   ssize_t bufferLen;
   srand(time(NULL));
-  while (true) {
-    if (readData(buffer, &bufferLen) == READ_DATA_FAILURE) {
-      break;
-    }
-    
+  while (readData(buffer, &bufferLen) == READ_DATA_SUCCESS) {
     writeData(buffer, bufferLen, pipe1, pipe2);
   }
 
