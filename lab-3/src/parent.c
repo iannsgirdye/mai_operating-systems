@@ -14,6 +14,7 @@
 #define EXECV_FAILURE         -1
 #define GET_FILE_NAME_SUCCESS  0
 #define GET_FILE_NAME_FAILURE -1
+#define MIN_FILE_NAME_LENGTH   2
 #define AFTER_FORK_SUCCESS     0
 #define AFTER_FORK_FAILURE    -1
 #define READ_DATA_SUCCESS      0
@@ -21,11 +22,11 @@
 
 int getFileName(char *fileName, int fileNumber) {
   char message[BUFSIZ];
-  int messageLen = sprintf(message, "Enter name of the %d child file: ", fileNumber);
+  int messageLen = snprintf(message, BUFSIZ, "Enter the name of the child file #%d: ", fileNumber);
   write(STDOUT_FILENO, message, messageLen);
   
-  ssize_t fileNameLen = read(STDIN_FILENO, fileName, BUFSIZ);
-  if (fileNameLen < 1) {
+  ssize_t fileNameLen = read(STDIN_FILENO, fileName, BUFSIZ - 1);
+  if (fileNameLen < MIN_FILE_NAME_LENGTH) {
     printError("Invalid name of the file.");
     return GET_FILE_NAME_FAILURE;
   }
@@ -67,7 +68,7 @@ void writeData(const char buffer[], ssize_t bufferLen, const int pipe1[], const 
 int main() {
   int pipe1[2], pipe2[2];
   if (pipe(pipe1) == PIPE_FAILURE || pipe(pipe2) == PIPE_FAILURE) {
-    printError("Pipe error.");
+    printError("Pipe init error.");
     exit(EXIT_FAILURE);
   }
 
