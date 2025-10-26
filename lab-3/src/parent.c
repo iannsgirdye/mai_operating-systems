@@ -6,7 +6,6 @@
 #include <string.h>
 #include <time.h>
 #include <stdbool.h>
-#include "../include/colors.h"
 #include "../include/utilities.h"
 
 #define PIPE_ERROR -1
@@ -19,11 +18,7 @@
 
 int getFileName(char* fileName, const int fileNumber) {
   char message[BUFSIZ];
-  int messageLen = sprintf(
-    message,
-    COLOR_BOLD_CYAN "Enter name of the %d child file: " COLOR_WHITE, 
-    fileNumber
-  );
+  int messageLen = sprintf(message, "Enter name of the %d child file: ", fileNumber);
   write(STDOUT_FILENO, message, messageLen);
   
   ssize_t fileNameLen = read(STDIN_FILENO, fileName, BUFSIZ);
@@ -80,7 +75,7 @@ int main() {
     printError("Invalid name of the first file.");
     exit(EXIT_FAILURE);
   }
-  
+
   char fileName2[BUFSIZ];
   if (getFileName(fileName2, 2) == FILE_NAME_ERROR) {
     printError("Invalid name of the second file.");
