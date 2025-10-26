@@ -34,9 +34,7 @@ void initСhannel(channel_t *ch, size_t i, pid_t pid) {
 
   ftruncate(ch->shm_fd, sizeof(shm_buffer_t));
 
-  ch->buf = mmap(NULL, sizeof(shm_buffer_t),
-  PROT_READ | PROT_WRITE,
-  MAP_SHARED, ch->shm_fd, 0);
+  ch->buf = mmap(NULL, sizeof(shm_buffer_t), PROT_READ | PROT_WRITE, MAP_SHARED, ch->shm_fd, 0);
 
   ch->sem_w = sem_open(ch->sem_w_name, O_CREAT, 0600, 1);
   ch->sem_r = sem_open(ch->sem_r_name, O_CREAT, 0600, 0);
