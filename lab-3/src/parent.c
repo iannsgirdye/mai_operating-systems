@@ -1,11 +1,9 @@
 #include <stdio.h>
-#include <stdint.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #include <string.h>
 #include <time.h>
-#include <stdbool.h>
 #include "../include/utilities.h"
 
 #define PIPE_FAILURE           -1
