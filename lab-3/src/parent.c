@@ -112,8 +112,8 @@ int main() {
   close(pipe1[1]);
   close(pipe2[1]);
 
-  wait(NULL);
-  wait(NULL);
+  waitpid(child1, NULL, 0);
+  waitpid(child2, NULL, 0);
 
   return 0;
 }
