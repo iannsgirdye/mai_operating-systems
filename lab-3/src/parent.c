@@ -84,29 +84,25 @@ int main() {
 
   pid_t child1 = fork();
   switch (child1) {
-    case FORK_FAILURE: {
+    case FORK_FAILURE:
       printError("Fork error.");
       exit(EXIT_FAILURE);
-    }
-    case IS_CHILD: {
+    case IS_CHILD:
       if (completeChild(pipe1, pipe2, fileName1) == COMPLETE_CHILD_FAILURE) {
         printError("Invalid complete of the child #1.");
         exit(EXIT_FAILURE);
-      }
     }
   }
 
   pid_t child2 = fork();
   switch (child2) {
-    case FORK_FAILURE: {
+    case FORK_FAILURE:
       printError("Fork error.");
       exit(EXIT_FAILURE);
-    }
-    case IS_CHILD: {
+    case IS_CHILD:
       if (completeChild(pipe2, pipe1, fileName2) == COMPLETE_CHILD_FAILURE) {
         printError("Invalid complete of the child #2.");
         exit(EXIT_FAILURE);
-      }
     }
   }
 
