@@ -28,7 +28,9 @@ int main(int argc, char *argv[]) {
 
   int file = open(argv[1], O_WRONLY | O_CREAT | O_TRUNC, 0600);
   if (file == OPEN_FAILURE) {
-    printError("Can not open the file.");
+    char message[BUFSIZ];
+    snprintf(message, BUFSIZ, "Can not open the file \"%s\".", argv[1]);
+    printError(message);
     exit(EXIT_FAILURE);
   }
 
