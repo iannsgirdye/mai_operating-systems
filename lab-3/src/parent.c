@@ -12,8 +12,8 @@
 #define IS_CHILD               0
 #define FORK_FAILURE          -1
 #define EXECV_FAILURE         -1
-#define GET_FILE_NAME_FAILURE  0
-#define GET_FILE_NAME_SUCCESS -1
+#define GET_FILE_NAME_SUCCESS  0
+#define GET_FILE_NAME_FAILURE -1
 #define AFTER_FORK_SUCCESS     0
 #define AFTER_FORK_FAILURE    -1
 #define READ_DATA_SUCCESS      0
