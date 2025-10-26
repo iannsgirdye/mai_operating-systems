@@ -5,6 +5,7 @@
 #include <sys/mman.h>
 #include <semaphore.h>
 #include <string.h>
+#include "../include/shm.h"
 #include "../include/utilities.h"
 
 #define OPEN_FAILURE -1
