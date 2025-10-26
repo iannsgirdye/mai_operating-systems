@@ -12,27 +12,10 @@
 #define IS_CHILD                0
 #define FORK_FAILURE           -1
 #define EXECV_FAILURE          -1
-#define GET_FILE_NAME_SUCCESS   0
-#define GET_FILE_NAME_FAILURE  -1
-#define MIN_FILE_NAME_LENGTH    2
 #define COMPLETE_CHILD_SUCCESS  0
 #define COMPLETE_CHILD_FAILURE -1
 #define READ_DATA_SUCCESS       0
 #define READ_DATA_FAILURE      -1
-
-int getFileName(char *fileName, int fileNumber) {
-  char message[BUFSIZ];
-  int messageLen = snprintf(message, BUFSIZ, "Enter the name of the child file #%d: ", fileNumber);
-  write(STDOUT_FILENO, message, messageLen);
-  
-  ssize_t fileNameLen = read(STDIN_FILENO, fileName, BUFSIZ - 1);
-  if (fileNameLen < MIN_FILE_NAME_LENGTH) {
-    printError("Invalid name of the file.");
-    return GET_FILE_NAME_FAILURE;
-  }
-  fileName[fileNameLen - 1] = '\0';
-  return GET_FILE_NAME_SUCCESS;
-}
 
 int completeChild(const int pipe[], const int otherPipe[], char *fileName) {
   dup2(pipe[0], STDIN_FILENO);
