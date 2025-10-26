@@ -73,7 +73,6 @@ int main() {
 
   char buf[BUFSIZ];
   ssize_t len;
-
   while ((len = read(STDIN_FILENO, buf, BUFSIZ)) > 0) {
     size_t i = (rand() % 100 < 80) ? 0 : 1;
     channel_t *ch = &channels[i];
