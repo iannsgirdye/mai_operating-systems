@@ -6,8 +6,8 @@
 #include <string.h>
 #include <time.h>
 #include <stdbool.h>
-#include "../include/errors.h"
 #include "../include/colors.h"
+#include "../include/utilities.h"
 
 
 #define PIPE_ERROR -1
@@ -33,7 +33,7 @@ int getFileName(char* fileName, const int fileNumber) {
   
   ssize_t fileNameLen = read(STDIN_FILENO, fileName, FILE_NAME_SIZE);
   if (fileNameLen < 1) {
-    errorInvalidFileName();
+    printError("Invalid name of the file.");
     return FILE_NAME_ERROR;
   }
   fileName[fileNameLen - 1] = '\0';
@@ -50,7 +50,7 @@ int afterFork(const int pipe[], const int otherPipe[], char *fileName) {
 
   char *const args[] = {"child", fileName, NULL};
   if (execv("./child", args) == EXECV_ERROR) {
-    errorExecv();
+    printError("Exec child.");
     return -1;
   }
 
@@ -86,16 +86,18 @@ void writeData(const char buffer[], const ssize_t bufferLen, const int pipe1[], 
 int main() {
   int pipe1[2], pipe2[2];
   if (pipe(pipe1) == PIPE_ERROR || pipe(pipe2) == PIPE_ERROR) {
-    errorPipe();
-    return 0;
+    printError("Pipe error.");
+    exit(EXIT_FAILURE);
   }
 
   char fileName1[FILE_NAME_SIZE], fileName2[FILE_NAME_SIZE];
   if (getFileName(fileName1, 1) == FILE_NAME_ERROR) {
-    return 0;
+    printError("Invalid name of the first file.");
+    exit(EXIT_FAILURE);
   }
   if (getFileName(fileName2, 2) == FILE_NAME_ERROR) {
-    return 0;
+    printError("Invalid name of the second file.");
+    exit(EXIT_FAILURE);
   }
 
   pid_t child1 = fork();
@@ -114,8 +116,8 @@ int main() {
   pid_t child2 = fork();
   switch (child2) {
     case FORK_ERROR: {
-      errorFork();
-      return 0;
+      printError("Fork error.");
+      exit(EXIT_FAILURE);
     }
     case IS_CHILD: {
       if (afterFork(pipe2, pipe1, fileName2) == AFTER_FORK_ERROR) {

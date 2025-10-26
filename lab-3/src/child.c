@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
-#include "../include/errors.h"
+#include "../include/utilities.h"
 
 #define BUFFER_SIZE 1024
 #define OPEN_ERROR -1
@@ -24,14 +24,14 @@ void reverse(char *str, ssize_t len) {
 
 int main(int argc, char *argv[]) {
   if (argc < 2) {
-    errorInvalidCountOfAgruments();
-    return 0;
+    printError("Invalid command. Usage: ./child <filename>");
+    exit(EXIT_FAILURE);
   }
 
   int file = open(argv[1], O_WRONLY | O_CREAT | O_TRUNC, 0600);
   if (file == OPEN_ERROR) {
-    errorOpenFile();
-    return 0;
+    printError("Can not open the file.");
+    exit(EXIT_FAILURE);
   }
 
   char buffer[BUFFER_SIZE];
