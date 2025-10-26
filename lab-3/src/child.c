@@ -8,7 +8,6 @@
 
 #define OPEN_ERROR -1
 
-
 void reverse(char *str, ssize_t len) {
   if (len > 0 && str[len-1] == '\n') {
     len--;
@@ -20,7 +19,6 @@ void reverse(char *str, ssize_t len) {
     str[len - 1 - i] = tmp;
   }
 }
-
 
 int main(int argc, char *argv[]) {
   if (argc < 2) {

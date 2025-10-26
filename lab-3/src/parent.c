@@ -9,7 +9,6 @@
 #include "../include/colors.h"
 #include "../include/utilities.h"
 
-
 #define PIPE_ERROR -1
 #define IS_CHILD 0
 #define FORK_ERROR -1
@@ -17,7 +16,6 @@
 #define FILE_NAME_ERROR -1
 #define AFTER_FORK_ERROR -1
 #define EMPTY_BUFFER -1
-
 
 int getFileName(char* fileName, const int fileNumber) {
   char message[BUFSIZ];
@@ -37,7 +35,6 @@ int getFileName(char* fileName, const int fileNumber) {
   return 0;
 }
 
-
 int afterFork(const int pipe[], const int otherPipe[], char *fileName) {
   dup2(pipe[0], STDIN_FILENO);
   close(pipe[0]);
@@ -54,31 +51,22 @@ int afterFork(const int pipe[], const int otherPipe[], char *fileName) {
   return 0;
 }
 
-
 int readData(char buffer[], ssize_t *bufferLen) {
   *bufferLen = read(STDIN_FILENO, buffer, BUFSIZ);
   
-  if (*bufferLen <= 0) {
+  if (*bufferLen <= 0 || buffer[0] == '\n') {
     return -1;
   }
-  
-  if (buffer[0] == '\n') {
-    return -1;
-  }
-
   return 0;
 }
-
 
 void writeData(const char buffer[], const ssize_t bufferLen, const int pipe1[], const int pipe2[]) {
   if ((rand() % 100) < 80) {
     write(pipe1[1], buffer, bufferLen);
     return;
   }
-  
   write(pipe2[1], buffer, bufferLen);
 }
-
 
 int main() {
   int pipe1[2], pipe2[2];
@@ -87,11 +75,13 @@ int main() {
     exit(EXIT_FAILURE);
   }
 
-  char fileName1[BUFSIZ], fileName2[BUFSIZ];
+  char fileName1[BUFSIZ];
   if (getFileName(fileName1, 1) == FILE_NAME_ERROR) {
     printError("Invalid name of the first file.");
     exit(EXIT_FAILURE);
   }
+  
+  char fileName2[BUFSIZ];
   if (getFileName(fileName2, 2) == FILE_NAME_ERROR) {
     printError("Invalid name of the second file.");
     exit(EXIT_FAILURE);
