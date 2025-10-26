@@ -16,7 +16,7 @@
 #define AFTER_FORK_ERROR -1
 #define EMPTY_BUFFER -1
 
-int getFileName(char* fileName, const int fileNumber) {
+int getFileName(char* fileName, int fileNumber) {
   char message[BUFSIZ];
   int messageLen = sprintf(message, "Enter name of the %d child file: ", fileNumber);
   write(STDOUT_FILENO, message, messageLen);
@@ -55,7 +55,7 @@ int readData(char buffer[], ssize_t *bufferLen) {
   return 0;
 }
 
-void writeData(const char buffer[], const ssize_t bufferLen, const int pipe1[], const int pipe2[]) {
+void writeData(const char buffer[], ssize_t bufferLen, const int pipe1[], const int pipe2[]) {
   if ((rand() % 100) < 80) {
     write(pipe1[1], buffer, bufferLen);
     return;
