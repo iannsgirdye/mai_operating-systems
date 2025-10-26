@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -5,7 +6,6 @@
 #include <string.h>
 #include "../include/utilities.h"
 
-#define BUFFER_SIZE 1024
 #define OPEN_ERROR -1
 
 
@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
     exit(EXIT_FAILURE);
   }
 
-  char buffer[BUFFER_SIZE];
+  char buffer[BUFSIZ];
   ssize_t bufferLen;
   while ((bufferLen = read(STDIN_FILENO, buffer, sizeof(buffer))) > 0) {
     reverse(buffer, bufferLen);

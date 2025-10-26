@@ -15,15 +15,12 @@
 #define FORK_ERROR -1
 #define EXECV_ERROR -1
 #define FILE_NAME_ERROR -1
-#define FILE_NAME_SIZE 256
-#define MESSAGE_SIZE 128
-#define BUFFER_SIZE 1024
 #define AFTER_FORK_ERROR -1
 #define EMPTY_BUFFER -1
 
 
 int getFileName(char* fileName, const int fileNumber) {
-  char message[MESSAGE_SIZE];
+  char message[BUFSIZ];
   int messageLen = sprintf(
     message,
     COLOR_BOLD_CYAN "Enter name of the %d child file: " COLOR_WHITE, 
@@ -31,7 +28,7 @@ int getFileName(char* fileName, const int fileNumber) {
   );
   write(STDOUT_FILENO, message, messageLen);
   
-  ssize_t fileNameLen = read(STDIN_FILENO, fileName, FILE_NAME_SIZE);
+  ssize_t fileNameLen = read(STDIN_FILENO, fileName, BUFSIZ);
   if (fileNameLen < 1) {
     printError("Invalid name of the file.");
     return FILE_NAME_ERROR;
@@ -59,7 +56,7 @@ int afterFork(const int pipe[], const int otherPipe[], char *fileName) {
 
 
 int readData(char buffer[], ssize_t *bufferLen) {
-  *bufferLen = read(STDIN_FILENO, buffer, BUFFER_SIZE);
+  *bufferLen = read(STDIN_FILENO, buffer, BUFSIZ);
   
   if (*bufferLen <= 0) {
     return -1;
@@ -90,7 +87,7 @@ int main() {
     exit(EXIT_FAILURE);
   }
 
-  char fileName1[FILE_NAME_SIZE], fileName2[FILE_NAME_SIZE];
+  char fileName1[BUFSIZ], fileName2[BUFSIZ];
   if (getFileName(fileName1, 1) == FILE_NAME_ERROR) {
     printError("Invalid name of the first file.");
     exit(EXIT_FAILURE);
@@ -129,7 +126,7 @@ int main() {
   close(pipe1[0]);
   close(pipe2[0]);
 
-  char buffer[BUFFER_SIZE];
+  char buffer[BUFSIZ];
   ssize_t bufferLen;
   srand(time(NULL));
   while (true) {
