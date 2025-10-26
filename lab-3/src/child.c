@@ -6,7 +6,7 @@
 #include <string.h>
 #include "../include/utilities.h"
 
-#define OPEN_ERROR -1
+#define OPEN_FAILURE -1
 
 void reverse(char *str, ssize_t len) {
   if (len > 0 && str[len-1] == '\n') {
@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
   }
 
   int file = open(argv[1], O_WRONLY | O_CREAT | O_TRUNC, 0600);
-  if (file == OPEN_ERROR) {
+  if (file == OPEN_FAILURE) {
     printError("Can not open the file.");
     exit(EXIT_FAILURE);
   }
