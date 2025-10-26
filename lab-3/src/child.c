@@ -9,7 +9,7 @@
 #define OPEN_FAILURE -1
 
 void reverse(char *str, ssize_t len) {
-  if (len > 0 && str[len-1] == '\n') {
+  if (len > 0 && str[len - 1] == '\n') {
     len--;
   }
   
