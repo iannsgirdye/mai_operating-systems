@@ -8,17 +8,17 @@
 #include <stdbool.h>
 #include "../include/utilities.h"
 
-#define PIPE_FAILURE          -1
-#define IS_CHILD               0
-#define FORK_FAILURE          -1
-#define EXECV_FAILURE         -1
-#define GET_FILE_NAME_SUCCESS  0
-#define GET_FILE_NAME_FAILURE -1
-#define MIN_FILE_NAME_LENGTH   2
-#define AFTER_FORK_SUCCESS     0
-#define AFTER_FORK_FAILURE    -1
-#define READ_DATA_SUCCESS      0
-#define READ_DATA_FAILURE     -1
+#define PIPE_FAILURE           -1
+#define IS_CHILD                0
+#define FORK_FAILURE           -1
+#define EXECV_FAILURE          -1
+#define GET_FILE_NAME_SUCCESS   0
+#define GET_FILE_NAME_FAILURE  -1
+#define MIN_FILE_NAME_LENGTH    2
+#define COMPLETE_CHILD_SUCCESS  0
+#define COMPLETE_CHILD_FAILURE -1
+#define READ_DATA_SUCCESS       0
+#define READ_DATA_FAILURE      -1
 
 int getFileName(char *fileName, int fileNumber) {
   char message[BUFSIZ];
@@ -44,10 +44,9 @@ int completeChild(const int pipe[], const int otherPipe[], char *fileName) {
   const char *path = "./child";
   char *const argv[] = {"child", fileName, NULL};
   if (execv(path, argv) == EXECV_FAILURE) {
-    printError("Exec child.");
-    return AFTER_FORK_FAILURE;
+    return COMPLETE_CHILD_FAILURE;
   }
-  return AFTER_FORK_SUCCESS;
+  return COMPLETE_CHILD_SUCCESS;
 }
 
 int readData(char buffer[], ssize_t *bufferLen) {
@@ -90,8 +89,8 @@ int main() {
       exit(EXIT_FAILURE);
     }
     case IS_CHILD: {
-      if (completeChild(pipe1, pipe2, fileName1) == AFTER_FORK_FAILURE) {
-        printError("After fork error.");
+      if (completeChild(pipe1, pipe2, fileName1) == COMPLETE_CHILD_FAILURE) {
+        printError("Invalid complete of the child #1.");
         exit(EXIT_FAILURE);
       }
     }
@@ -104,8 +103,8 @@ int main() {
       exit(EXIT_FAILURE);
     }
     case IS_CHILD: {
-      if (completeChild(pipe2, pipe1, fileName2) == AFTER_FORK_FAILURE) {
-        printError("After fork error.");
+      if (completeChild(pipe2, pipe1, fileName2) == COMPLETE_CHILD_FAILURE) {
+        printError("Invalid complete of the child #2.");
         exit(EXIT_FAILURE);
       }
     }
