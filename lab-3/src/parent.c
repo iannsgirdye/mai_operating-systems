@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <fcntl.h>
+#include <sys/mman.h>
 #include <sys/wait.h>
+#include <semaphore.h>
 #include <string.h>
 #include <time.h>
 #include "../include/utilities.h"

@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <sys/mman.h>
+#include <semaphore.h>
 #include <string.h>
 #include "../include/utilities.h"
 
