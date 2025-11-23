@@ -1,4 +1,6 @@
 #include "../../include/utilities.h"
+#include <unistd.h>
+#include <string.h>
 
 commandType checkCommand(int mode, int argsCount) {
   if (argsCount == 0) {
@@ -12,4 +14,12 @@ commandType checkCommand(int mode, int argsCount) {
     return INVALID_ARGS_COUNT;
   }
   return OK;
+}
+
+void printMessage(const char *message) {
+  write(STDOUT_FILENO, message, strlen(message));
+}
+
+void printError(const char *error) {  
+  write(STDERR_FILENO, error, strlen(error));
 }

@@ -10,4 +10,7 @@ typedef enum {
 
 commandType checkCommand(int mode, int argsCount);
 
+void printMessage(const char *message);
+void printError(const char *error);
+
 #endif
