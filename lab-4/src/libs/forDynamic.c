@@ -1,5 +1,5 @@
-#include "../include/contracts.h"
-#include "../include/simpleBool.h"
+#include "../../include/contracts.h"
+#include "../../include/simpleBool.h"
 #include <stdlib.h>
 
 int prime_count(int a, int b) {

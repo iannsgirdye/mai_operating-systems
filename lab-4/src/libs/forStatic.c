@@ -1,5 +1,5 @@
-#include "../include/contracts.h"
-#include "../include/simpleBool.h"
+#include "../../include/contracts.h"
+#include "../../include/simpleBool.h"
 
 int is_prime(int number) {
   if (number == 1) {
