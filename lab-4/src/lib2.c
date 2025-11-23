@@ -31,3 +31,11 @@ int prime_count(int a, int b) {
   free(is_prime);
   return count;
 }
+
+float pi(int k) {
+  float composition = 1.0;
+  for (int i = 1; i <= k; ++i) {
+    composition *= (4.0 * i * i) / (4.0 * i * i - 1.0);
+  }
+  return composition * 2.0;
+}
