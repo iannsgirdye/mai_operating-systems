@@ -3,7 +3,6 @@
 #include <unistd.h>
 #include <string.h>
 #include <dlfcn.h>
-
 #include "../include/contracts.h"
 #include "../include/utilities.h"
 
