@@ -8,7 +8,10 @@
 #define BUFFER_SIZE 128
 
 int main() {
-  printMessage("1 <start> <end> - count of prime numbers in range [start; end]\n2 <accuracy> - PI\n\n");
+  printMessage(
+    "1 <start> <end> - calculate count of prime numbers in range [start; end]\n"
+    "2 <accuracy>    - calculate PI\n\n"
+  );
 
   char buffer[BUFFER_SIZE];
   int mode = 0;
@@ -22,16 +25,10 @@ int main() {
     argsCount = sscanf(buffer, "%d%d%d", &mode, &arg1, &arg2);
     
     switch(checkCommand(mode, argsCount)) {
-      case NO_COMMAND:
-        printError("Invalid input\n");
-        break;
-      case INVALID_MODE:
-        printError("Invalid mode\n");
-        break;
-      case INVALID_ARGS_COUNT:
-        printError("Invalid count of arguments\n");
-        break;
-      default:
+      case NO_COMMAND: printError("Invalid input\n"); break;
+      case INVALID_MODE: printError("Invalid mode\n"); break;
+      case INVALID_ARGS_COUNT: printError("Invalid count of arguments\n"); break;
+      case OK:
         switch (mode) {
           case 1:
             snprintf(buffer, BUFFER_SIZE, "%d\n", prime_count(arg1, arg2));
