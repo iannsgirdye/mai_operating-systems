@@ -44,9 +44,9 @@ static void load_library() {
 
 int main() {
   printMessage(
-    "0               - switch implementation of functions\n"
-    "1 <start> <end> - calculate count of prime numbers in range [start; end]\n"
-    "2 <accuracy>    - calculate pi\n\n"
+    "0               | switch implementation of functions\n"
+    "1 <start> <end> | calculate count of prime numbers in range [start; end]\n"
+    "2 <accuracy>    | calculate PI\n"
   );
 
   load_library();
@@ -55,6 +55,7 @@ int main() {
   int mode = 0, arg1 = 0, arg2 = 0, argsCount;
   ssize_t len;
 
+  printMessage("Choose a mode: ");
   while ((len = read(STDIN_FILENO, buffer, BUFFER_SIZE - 1)) > 0) {
     buffer[len] = '\0';
     argsCount = sscanf(buffer, "%d%d%d", &mode, &arg1, &arg2);
@@ -81,6 +82,8 @@ int main() {
             break;
         }
     }
+
+    printMessage("Choose a mode: ");
   }
 
   if (library) {
